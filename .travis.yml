@@ -1,0 +1,30 @@
+language: python
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "nightly"
+branches:
+  only:
+    - master
+
+dist: trusty
+addons:
+  chrome: stable
+before_install:
+  # Install ChromeDriver (64bits; replace 64 with 32 for 32bits).
+  - wget -N http://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip -P ~/
+  - unzip ~/chromedriver_linux64.zip -d ~/
+  - rm ~/chromedriver_linux64.zip
+  - sudo mv -f ~/chromedriver /usr/local/share/
+  - sudo chmod +x /usr/local/share/chromedriver
+  - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+
+install:
+  - pip install pytest
+  - pip install pytest-django
+  - pip install django==1.11.12
+  - pip install selenium==3.11.0
+
+script:
+  - py.test
