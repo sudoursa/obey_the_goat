@@ -1,13 +1,18 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import time
 
+CHROME_OPTIONS = Options()
+CHROME_OPTIONS.add_argument("--headless")
+CHROME_OPTIONS.add_argument("--no-sandbox")
+CHROME_OPTIONS.add_argument("--disable-gpu")
 
 class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome(chrome_options=CHROME_OPTIONS)
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
@@ -61,7 +66,7 @@ class NewVisitorTest(LiveServerTestCase):
         ## We use a new browser session to make sure that no information
         ## of Edith's is coming through from cookies etc #
         self.browser.quit()
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome(chrome_options=CHROME_OPTIONS)
 
         # Francis visits the home page. There is no sign of Edith's list
         self.browser.get(self.live_server_url)
